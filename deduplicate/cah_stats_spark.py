@@ -25,7 +25,7 @@ def main():
   print("Retrieving columns of all csv files")
   fs = [str(x) for x in Path('/media/hd/cah/drive').glob("**/*.csv")] + [str(x) for x in Path('/media/hd/cah/theeye/output/cah').glob("**/*.csv")]
   #fs = [x for x in fs if "202108"in x]
-  #fs = [x for x in fs if x.replace("/media/hd/cah/theeye/output/cah/", "").split("/")[0] >= "20210815"]
+  #fs = [x for x in fs if x.replace("/media/hd/cah/theeye/output/cah/", "").split("/")[0] >= "20210818"]
   headers = p.map(f, fs)
   all = list(zip(headers,fs))
   print("Grouping files by columns")
@@ -39,7 +39,7 @@ def main():
 
   print("Starting spark session")
   from pyspark.sql import SparkSession
-  from pyspark.sql.functions import lit
+  from pyspark.sql.functions import lit, rand
   # You can open http://localhost:4040 to follow progress on the spark operations
   spark = SparkSession.builder.config("spark.driver.memory", "16G") .master("local[16]").appName('spark-stats').getOrCreate() 
 
@@ -68,7 +68,7 @@ def main():
   total = total.withColumn("similarity", total["similarity"].cast("double"))
   
   print("Repartitionning and writing to 16 parquet files to cah_dataframe")
-  total.repartition(16).write.mode("overwrite").parquet("cah_dataframe")
+  total.repartition(32).write.mode("overwrite").parquet("cah_dataframe")
 
   old_unique = spark.read.parquet("cah_dataframe_unique")
   old_unique.write.mode("overwrite").parquet("old_cah_unique")
@@ -80,7 +80,8 @@ def main():
   print("Rereading the parquet and computing some basic stats")
   print("Size of collection", ok.count())
   uniques = ok.drop_duplicates(["URL", "TEXT"])
-  uniques.repartition(16).write.mode("overwrite").parquet("cah_dataframe_unique")
+  uniques_shuffled = uniques.orderBy(rand())
+  uniques_shuffled.repartition(32).write.mode("overwrite").parquet("cah_dataframe_unique")
   ok_unique = spark.read.parquet("cah_dataframe_unique")
   print("Number of uniques", ok_unique.count())
 
