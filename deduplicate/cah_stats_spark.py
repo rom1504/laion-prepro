@@ -67,7 +67,7 @@ def main():
   total = total.withColumn("HEIGHT", total["HEIGHT"].cast("int"))
   total = total.withColumn("similarity", total["similarity"].cast("double"))
   
-  print("Repartitionning and writing to 16 parquet files to cah_dataframe")
+  print("Repartitionning and writing to 32 parquet files to cah_dataframe")
   total.repartition(32).write.mode("overwrite").parquet("cah_dataframe")
 
   old_unique = spark.read.parquet("cah_dataframe_unique")
