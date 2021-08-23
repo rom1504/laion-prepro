@@ -70,13 +70,13 @@ def main():
   print("Repartitionning and writing to 32 parquet files to cah_dataframe")
   total.repartition(32).write.mode("overwrite").parquet("cah_dataframe")
 
-  old_unique = spark.read.parquet("cah_dataframe_unique")
-  old_unique.write.mode("overwrite").parquet("old_cah_unique")
+  #old_unique = spark.read.parquet("cah_dataframe_unique")
+  #old_unique.write.mode("overwrite").parquet("old_cah_unique")
 
-  old_unique = spark.read.parquet("old_cah_unique")
+  #old_unique = spark.read.parquet("old_cah_unique")
 
   ok = spark.read.parquet("cah_dataframe")
-  ok = ok.union(old_unique)
+  #ok = ok.union(old_unique)
   print("Rereading the parquet and computing some basic stats")
   print("Size of collection", ok.count())
   uniques = ok.drop_duplicates(["URL", "TEXT"])
