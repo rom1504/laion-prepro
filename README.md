@@ -25,18 +25,24 @@ It is possible to skip step 1 and 2 by using directly the files provided at [cah
 
 ## Download csv
 
-This steps takes about one hour.
+This step takes about one hour.
 
 Read more at [download_csv](download_csv)
 
 ## Deduplicate
 
-This steps takes about one hour.
+This step takes about one hour.
 
 Read more at [deduplicate](deduplicate)
 
 ## Download images
 
-This steps takes about 2 days.
+This step takes about 4 days.
 
 Read more at [download_images](download_images)
+
+## Compute clip embeddings and indices
+
+This step takes about 2 days
+
+see https://github.com/rom1504/clip-retrieval
