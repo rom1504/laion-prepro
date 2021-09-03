@@ -20,6 +20,7 @@ This preprocessing pipeline is composed of 3 steps:
 1. downloading the raw csv files
 2. reading them with spark to align the columns and remove the duplicates
 3. downloading the images and producing the final dataset
+4. compute clip embeddings and indices
 
 It is possible to skip step 1 and 2 by using directly the files provided at [cah unique](http://3080.rom1504.fr/cah/cah_dataframe_unique/)
 
