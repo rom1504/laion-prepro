@@ -15,6 +15,13 @@ Then run :
 time clip-retrieval index --embeddings_folder="/media/hd/testing/cah400M_embs" --index_folder="/media/hd/testing/my_index" --max_index_memory_usage="16G"
 ```
 
+### scoring
+
+If you want to know the recall score of the index, run this:
+```
+time autofaiss score_index --embeddings_path="/media/hd/testing/cah400M_embs/img_emb" --index_path="/media/hd/testing/the_big_index/image.index" --is_local_index_path True --current_memory_available="4G"
+```
+
 ### hosting
 
 with clip retrieval you can host the laion-400m index with these resources:
