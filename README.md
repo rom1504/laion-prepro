@@ -78,8 +78,10 @@ Finally the tar dataset is used to compute and package clip embeddings and use t
 
 The embeddings are stored in npy files next to parquet files in the same order. Since this dataset is much smaller than the image one, 1M sample are stored per npy file. Each npy file is 1GB, and each parquet files is 150MB. There are a total of 400 such files.
 
-These embeddings are then used to build a text and an image knn index using the autofaiss tool which makes it possible to produce a quantized index of arbitrary file. The chosen index type is of size 4GB so it's cheap for anyone to load it and run fast (10ms) queries over the whole dataset. A simple web demo shows the results.
+These embeddings are then used to build a text and an image knn index using the autofaiss tool which makes it possible to produce a quantized index of arbitrary file. The chosen index type is of size 16GB so it's cheap for anyone to load it and run fast (10ms) queries over the whole dataset. A simple web demo shows the results. Thanks to faiss memory mapping, it requires no ram to load the index.
 
 This step takes about 2 days
+
+Find the precise commands for inference, indexing and hosting at [embeddings-indices-hosting](embeddings-indices-hosting)
 
 see https://github.com/rom1504/clip-retrieval
