@@ -27,9 +27,9 @@ Follow these instructions:
 First download the indices and metadata:
 ```
 mkdir index/
-wget http://3080.rom1504.fr/cah/cah_400M_16G_index/image.index -O index/image.index
-wget http://3080.rom1504.fr/cah/cah_400M_16G_index/text.index -O index/text.index
-wget http://3080.rom1504.fr/cah/url_caption_laion_400m.hdf5 -O index/metadata.hdf5
+wget http://3080.rom1504.fr/cah/cah_400M_16G_index/image.index -O index_folder/image.index
+wget http://3080.rom1504.fr/cah/cah_400M_16G_index/text.index -O index_folder/text.index
+wget http://3080.rom1504.fr/cah/url_caption_laion_400m.hdf5 -O index_folder/metadata.hdf5
 ```
 
 Then install clip retrieval:
@@ -42,7 +42,7 @@ pip install clip-retrieval
 
 Then create the config file:
 ```
-echo '{"laion_400m": "index"}'
+echo '{"laion_400m": "index_folder"}' > indices_paths.json
 ```
 
 Then start it:
