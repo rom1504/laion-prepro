@@ -52,3 +52,9 @@ clip-retrieval back --port 1234 --indices-paths indices_paths.json --enable_hdf5
 
 You will then be able to use that backend in the [web demo](https://rom1504.github.io/clip-retrieval/)
 You may need to expose the backend over https (use nginx for example)
+
+You can also run the front yourself with:
+```
+npm install -g clip-retrieval-front
+clip-retrieval-front 3005
+```
