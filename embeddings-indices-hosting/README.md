@@ -36,7 +36,7 @@ First download the indices and metadata:
 mkdir index_folder/
 wget https://the-eye.eu/public/AI/cah/laion400m-indexes/laion400m-16GB-index/image.index -O index_folder/image.index
 wget https://the-eye.eu/public/AI/cah/laion400m-indexes/laion400m-16GB-index/text.index -O index_folder/text.index
-wget http://3080.rom1504.fr/cah/url_caption_laion_400m.hdf5 -O index_folder/metadata.hdf5
+wget https://the-eye.eu/public/AI/cah/laion400m-extras/url_caption_laion_400m.hdf5 -O index_folder/metadata.hdf5
 ```
 
 Then install clip retrieval:
