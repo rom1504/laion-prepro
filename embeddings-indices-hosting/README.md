@@ -34,8 +34,8 @@ Follow these instructions:
 First download the indices and metadata:
 ```
 mkdir index_folder/
-wget http://3080.rom1504.fr/cah/cah_400M_16G_index/image.index -O index_folder/image.index
-wget http://3080.rom1504.fr/cah/cah_400M_16G_index/text.index -O index_folder/text.index
+wget https://the-eye.eu/public/AI/cah/laion400m-indexes/laion400m-16GB-index/image.index -O index_folder/image.index
+wget https://the-eye.eu/public/AI/cah/laion400m-indexes/laion400m-16GB-index/text.index -O index_folder/text.index
 wget http://3080.rom1504.fr/cah/url_caption_laion_400m.hdf5 -O index_folder/metadata.hdf5
 ```
 
