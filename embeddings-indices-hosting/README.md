@@ -65,3 +65,19 @@ You can also run the front yourself with:
 npm install -g clip-retrieval-front
 clip-retrieval-front 3005
 ```
+
+Example nginx+certbot setup:
+```
+server {
+        server_name subdomain.domain.com;
+        location / {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_pass http://127.0.0.1:1234;
+                client_max_body_size 20M;
+        }
+}
+
+in /etc/nginx/sites-available/clip and /etc/nginx/sites-enabled/clip
+```
+`sudo certbot --nginx -d subdomain.domain.com` to setup https
