@@ -32,13 +32,13 @@ def create_spark_session():
 spark = create_spark_session()
 
 index, index_infos = build_index(
-    embeddings=["s3://laion-us-east-1/embeddings/vit-l-14/laion2B-en/img_emb","s3://laion-us-east-1/embeddings/vit-l-14/laion2B-multi/img_emb","s3://laion-us-east-1/embeddings/vit-l-14/laion1B-nolang/img_emb"],
+    embeddings=["s3://laion-us-east-1/embeddings/vit-l-14/laion1B-nolang/img_emb"],
     distributed="pyspark",
-    max_index_memory_usage="800G",
+    max_index_memory_usage="300G",
     current_memory_available="26G",
-    nb_indices_to_keep=80,
+    nb_indices_to_keep=40,
     file_format="npy",
-    temporary_indices_folder="s3://laion-us-east-1/mytest/my_tmp_folder17",
-    index_path="s3://laion-us-east-1/indices/vit-l-14/image_PQ128/knn.index",
-    index_infos_path="s3://laion-us-east-1/indices/vit-l-14/image_PQ128/infos.json"
+    temporary_indices_folder="s3://laion-us-east-1/mytest/my_tmp_folder73",
+    index_path="s3://laion-us-east-1/indices/vit-l-14/laion1B-nolang-imagePQ128/knn.index",
+    index_infos_path="s3://laion-us-east-1/indices/vit-l-14/laion1B-nolang-imagePQ128/infos.json"
 )
