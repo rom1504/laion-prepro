@@ -1,0 +1,23 @@
+{
+    "laion5B": {
+            "indice_folder": "/mnt/laion5B/prepared_data",
+            "provide_safety_model": true,
+            "enable_faiss_memory_mapping": true,
+            "use_arrow": true,
+            "enable_hdf5": false,
+            "reorder_metadata_by_ivf_index": false,
+            "columns_to_return": ["url", "caption"],
+            "clip_model": "ViT-L/14",
+            "enable_mclip_option": false
+    },
+    "laion_400m": {
+            "indice_folder": "/mnt/laion400M/index100",
+            "provide_safety_model": true,
+            "enable_faiss_memory_mapping": true,
+            "enable_hdf5": true,
+            "use_arrow": false,
+            "reorder_metadata_by_ivf_index": true,
+            "enable_mclip_option": true,
+            "clip_model": "ViT-B/32"
+    }
+}
