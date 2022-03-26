@@ -1,6 +1,8 @@
 # laion-prepro
 Get billions of image+url from the laion datasets and preprocess them.
 
+<img src="./assets/french_cats.png" width="500">
+
 This repository can be run on
 * for laion400m one machine with 32GB of ram, 8TB of disk, 16 i7 core and a 1Gbps connection.
 * laion5B 10 machines similar to the laion400m one
@@ -36,8 +38,8 @@ Check the [colab](https://colab.research.google.com/drive/14Hc_fUUOrG9260VzD_XsT
 
 laion5B and laion400m processing is overall the same, but laion5B being 10x, it required making everything distributed
 
-Read more at [laion5B/README]
+Read more at [laion5B/README.md](laion5B/README.md)
 
 ## laion400m
 
-See [laion400m/README]
+See [laion400m/README.md](laion400m/README.md)
