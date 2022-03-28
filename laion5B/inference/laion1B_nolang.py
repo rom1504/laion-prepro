@@ -35,7 +35,7 @@ def create_spark_session():
 
 spark = create_spark_session()
 
-input_dataset = "pipe:aws s3 cp --quiet s3://laion-us-east-1/laion-data/laion1B-nolang/{000000..226687}.tar -"
+input_dataset = "pipe:aws s3 cp --quiet s3://laion-us-east-1/laion-data/laion1B-nolang-data/{000000..127231}.tar -"
 clip_inference(
     input_dataset=input_dataset,
     output_folder="s3://laion-us-east-1/embeddings/vit-l-14/laion1B-nolang",
