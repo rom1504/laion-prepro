@@ -2,7 +2,7 @@
 
 So you want to use laion5B for training image/text models ? Great idea!
 
-First read the laion5B post at ...
+First read the laion5B post at https://laion.ai/laion-5b-a-new-era-of-open-large-scale-multi-modal-datasets/
 
 
 ## Guides
@@ -59,7 +59,23 @@ note that webdataset is also possible for keras or jax, but a bit less convenien
 ## Downloading the metadata
 
 Once you're happy with your subset selection, the first step is downloading the metadata.
-You can download it from huggingface at ...
+
+```
+mkdir laion2B-en && cd laion2B-en
+for i in {00000..00127}; do wget https://huggingface.co/datasets/laion/laion2B-en/resolve/main/part-$i-5114fd87-297e-42b0-9d11-50f1df323dfa-c000.snappy.parquet; done
+cd ..
+```
+
+```
+mkdir laion2B-multi && cd laion2B-multi
+for i in {00000..00127}; do wget https://huggingface.co/datasets/laion/laion2B-multi/resolve/main/part-$i-fc82da14-99c9-4ff6-ab6a-ac853ac82819-c000.snappy.parquet; done
+cd ..
+```
+
+```
+mkdir laion1B-nolang && cd laion1B-nolang
+for i in {00000..00127}; do wget https://huggingface.co/datasets/laion/laion1B-nolang/resolve/main/part-$i-d6a94da9-d368-4d5b-9ab7-3f6d3c7abdb3-c000.snappy.parquet; done
+```
 
 
 ## Filtering the metadata
