@@ -38,7 +38,7 @@ Once you've chosen your language subset, you can further subselect data:
 
 ### Format and resolution
 
-Resolution 224 and 384 are popular choice. Be aware that 384 is 3x bigger than 284.
+Resolution 224 and 384 are popular choice. Be aware that 384 is 3x bigger than 224.
 You may also choose not to upsample images that are smaller than this threshold.
 An example of choice can be summarized with these img2dataset options:
 ```
