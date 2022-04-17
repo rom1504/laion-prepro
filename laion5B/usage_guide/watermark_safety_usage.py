@@ -12,4 +12,9 @@ def compute_hash(url, text):
 # https://huggingface.co/datasets/laion/laion5B-watermark-safety-ordered
 
 kv = OnDiskKV(file="/media/nvme/laion5B-watermark-safety-ordered/laion5B-watermark-safety-ordered", key_format="q", value_format="ee")
-print(kv[compute_hash("http://i0.wp.com/ajournalofmusicalthings.com/wp-content/uploads/2016/05/Banjoe-the-Bulldog-copy.jpg?resize=290%2C166", "Banjoe the Bulldog copy")])
+pwatermark, punsafe = kv[compute_hash("http://i0.wp.com/ajournalofmusicalthings.com/wp-content/uploads/2016/05/Banjoe-the-Bulldog-copy.jpg?resize=290%2C166", "Banjoe the Bulldog copy")]
+
+print(pwatermark)
+print(punsafe)
+print(pwatermark > 0.8)
+print(punsafe > 0.5)
