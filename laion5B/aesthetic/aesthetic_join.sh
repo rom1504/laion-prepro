@@ -1,0 +1,3 @@
+python3 aesthetic_join.py --initial_path /media/hd2/laion1B-nolang-joined --aesthetic_path /media/hd2/laion1B-nolang-aesthetic-tags --output_path /media/hd2/laion1B-nolang-aesthetic
+python3 aesthetic_join.py --initial_path /media/hd2/laion2B-en-joined --aesthetic_path /media/hd2/laion2B-en-aesthetic-tags --output_path /media/hd2/laion2B-en-aesthetic
+python3 aesthetic_join.py --initial_path /media/hd2/laion2B-multi-joined --aesthetic_path /media/hd2/laion2B-multi-aesthetic-tags --output_path /media/hd2/laion2B-multi-aesthetic
