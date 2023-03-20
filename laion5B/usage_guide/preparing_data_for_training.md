@@ -90,10 +90,9 @@ def main():
   spark = SparkSession.builder.config("spark.driver.memory", "16G") .master("local[16]").appName('spark-stats').getOrCreate() 
   df = spark.read.parquet("laion2B")
 
-  df.filter((df.width >= 1024) & (df.height >= 1024))
+  df = df.filter(df.width >= 1024) & (df.height >= 1024))
   df = df.orderBy(rand()) # this line is important to have a shuffled dataset
-
-  df.repartition(128).write("laion2B_big")
+  df.repartition(128).write.parquet("laion2B_big")
 ```
 
 Note that pyspark is much faster if using a ssd drive, even better using a ssd nvme drive.
