@@ -90,7 +90,7 @@ def main():
   spark = SparkSession.builder.config("spark.driver.memory", "16G") .master("local[16]").appName('spark-stats').getOrCreate() 
   df = spark.read.parquet("laion2B")
 
-  df = df.filter(df.width >= 1024) & (df.height >= 1024))
+  df = df.filter((df.width >= 1024) & (df.height >= 1024))
   df = df.orderBy(rand()) # this line is important to have a shuffled dataset
   df.repartition(128).write.parquet("laion2B_big")
 ```
