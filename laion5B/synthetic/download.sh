@@ -1,0 +1,1 @@
+aria2c --dir=output --auto-file-renaming=false --continue=true -i for_aria.txt -x 16 -s 16 -j 100

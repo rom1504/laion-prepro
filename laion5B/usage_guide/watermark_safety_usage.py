@@ -12,7 +12,7 @@ def compute_hash(url, text):
 # https://huggingface.co/datasets/laion/laion5B-watermark-safety-ordered
 
 kv = OnDiskKV(file="/media/nvme/laion5B-watermark-safety-ordered/laion5B-watermark-safety-ordered", key_format="q", value_format="ee")
-pwatermark, punsafe = kv[compute_hash("http://i0.wp.com/ajournalofmusicalthings.com/wp-content/uploads/2016/05/Banjoe-the-Bulldog-copy.jpg?resize=290%2C166", "Banjoe the Bulldog copy")]
+pwatermark, punsafe = kv[compute_hash("https://eromitai.com/wordpress/wp-content/uploads/2015/12/flasher_nude017.jpg", "公共の場所で素っ裸になる (15)")]
 
 print(pwatermark)
 print(punsafe)

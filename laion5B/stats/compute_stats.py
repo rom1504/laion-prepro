@@ -4,6 +4,9 @@ let's compute more stats
 '''
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
+from pyspark import StorageLevel
+
+from pyspark.sql.types import IntegerType
 def main():
   spark = SparkSession.builder.config("spark.driver.memory", "16G") .config("spark.local.dir", "/media/nvme/spark-tmp").master("local[16]").appName('spark-stats').getOrCreate() 
 
@@ -11,6 +14,9 @@ def main():
 
   # laion1B-nolang, laion2B-en, laion2B-multi
   datasets = [(False, True), (False, False), (True, False)]
+
+  # laion1B-nolang, laion2B-en, laion2B-multi
+  #datasets = [(True, False)]
 
   for (multilingual, nolang) in datasets:
     sub_path = "laion1B-nolang" if nolang else ( "/laion2B-multi" if multilingual else "/laion2B-en")
@@ -58,10 +64,11 @@ def main():
 
 
     size_range = [[0,128], [128,256],[256,512], [512, 1024], [1024, None]]
-    text_range = [[0,25], [25,50],[50,100], [100,150], [150, None]]
+    text_range = [[0,25], [25,50],[50,100], [100,150], [150, 250], [250, None]]
 
     def compute_range_stats(field_name, ranges):
-      selected = df.select(field_name).persist()
+      selected = df.select(field_name).persist(StorageLevel.DISK_ONLY)
+      print(field_name + " quantiles", selected.approxQuantile(field_name, [0.05*x for x in range(1,20)], 0.01))
       for r in ranges:
         if r[1] is None:
           print("Number with "+field_name+" >=", r[0], nm(selected[(selected[field_name] >= r[0])].count()))
@@ -69,10 +76,16 @@ def main():
           print("Number with "+field_name+" >=", r[0], "and "+field_name+" <=", r[1], \
             nm(selected[(selected[field_name] >= r[0]) & (selected[field_name] <= r[1])].count()))
 
-    df = df.withColumn("lentext", F.length("TEXT"))
-    compute_range_stats("WIDTH", size_range)
-    compute_range_stats("HEIGHT", size_range)
-    compute_range_stats("lentext", text_range)
+    def utf8len(s):
+      return len(s.encode('utf-8')) if s is not None else 0
+    uutf8len = F.udf(utf8len, IntegerType())
+    #df = df.withColumn("lentext", F.length("TEXT"))
+    df = df.withColumn("lenbyte", uutf8len("TEXT"))
+    #compute_range_stats("WIDTH", size_range)
+    #compute_range_stats("HEIGHT", size_range)
+    #compute_range_stats("lentext", text_range)
+    compute_range_stats("lenbyte", text_range)
+    
 
     """
     df = df.withColumn("lentext", F.length("TEXT")).select("lentext").persist()
