@@ -1,4 +1,4 @@
-import pandas as pd 
+
 from pyspark.sql import SparkSession
 from  pyspark.sql.functions import lit, rand
 from pyspark.sql.functions import broadcast
