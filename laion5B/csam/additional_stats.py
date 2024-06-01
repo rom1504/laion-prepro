@@ -38,7 +38,7 @@ iwf_url_2b_en_filter = iwf_url_2b_en.join(iwf_2b_en, ["url"], "left_anti")
 
 print("Count iwf_url_2b_en_filter", iwf_url_2b_en_filter.count())
 
-human_rights_watch = spark.read.option("header", True).csv("/media/hd2/human_rights_watch/filter_human_rights_watch.csv").select("url")
+human_rights_watch = spark.read.option("header", True).csv("/media/hd2/human_rights_watch/merged_human_rights_watch.csv").select("url")
 
 print(human_rights_watch.count())
 

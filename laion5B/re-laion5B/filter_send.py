@@ -101,8 +101,8 @@ filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
             repo_id_en="laion/relaion2B-en-research-safe",
             repo_id_multi="laion/relaion2B-multi-research-safe",
             repo_id_nolang="laion/relaion1B-nolang-research-safe",
-            compute=False,
-            upload=True)
+            compute=True,
+            upload=False)
 
 # relaion-safe
 filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
