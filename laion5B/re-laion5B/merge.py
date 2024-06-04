@@ -10,7 +10,7 @@ from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.config("spark.driver.memory", "16G") .config("spark.local.dir", "/media/nvme/spark-tmp").master("local[16]").appName('spark-stats').getOrCreate()
 
-def run(research_safe):
+def run(safer):
     iwf_2b_en = spark.read.parquet("/media/hd2/iwf2/laion2B-en-md5-iwf").select("url")
     iwf_2b_multi = spark.read.parquet("/media/hd2/iwf2/laion2B-multi-md5-iwf").select("url")
     iwf_1b_nolang = spark.read.parquet("/media/hd2/iwf2/laion1B-nolang-md5-iwf").select("url")
@@ -27,7 +27,7 @@ def run(research_safe):
     c3p_2b_multi = spark.read.parquet("/media/hd2/c3p/laion2B-multi-md5-c3p").select("url")
     c3p_1b_nolang = spark.read.parquet("/media/hd2/c3p/laion1B-nolang-md5-c3p").select("url")
 
-    if research_safe:
+    if not safer:
         keyword_research_2b_en = spark.read.parquet("/media/hd2/keyword_punsafe_filtered/laion2B-en-md5-keyword_punsafe_research_filtered").select("url")
         keyword_research_2b_multi = spark.read.parquet("/media/hd2/keyword_punsafe_filtered/laion2B-multi-md5-keyword_punsafe_research_filtered").select("url")
         keyword_research_1b_nolang = spark.read.parquet("/media/hd2/keyword_punsafe_filtered/laion1B-nolang-md5-keyword_punsafe_research_filtered").select("url")
@@ -47,7 +47,7 @@ def run(research_safe):
     all_unsafe_2b_multi = all_unsafe_2b_multi.drop_duplicates()
     all_unsafe_1b_nolang = all_unsafe_1b_nolang.drop_duplicates()
 
-    if research_safe:
+    if not safer:
         all_unsafe_2b_en.write.mode("overwrite").parquet("/media/hd2/relaion_research_unsafe/laion2B-en-md5-unsafe")
         all_unsafe_2b_multi.write.mode("overwrite").parquet("/media/hd2/relaion_research_unsafe/laion2B-multi-md5-unsafe")
         all_unsafe_1b_nolang.write.mode("overwrite").parquet("/media/hd2/relaion_research_unsafe/laion1B-nolang-md5-unsafe")

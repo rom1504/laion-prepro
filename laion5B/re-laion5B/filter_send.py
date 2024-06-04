@@ -11,6 +11,10 @@ from huggingface_hub.commands.large_upload import large_upload
 import uuid
 import shutil
 
+# mapping from previous naming
+# research-safe -> research
+# safe -> research-safe
+# do this rename in other files
 
 root_tmp_path="/media/nvme/root_tmp_path"
 
@@ -29,7 +33,7 @@ def write_temp_read_recreate_spark(spark, df, root_tmp_path):
 def filter_send(input_en,
                 input_multi,
                 input_nolang,
-                research_safe,
+                safer,
                 output_path_en,
                 output_path_multi,
                 output_path_nolang,
@@ -45,7 +49,7 @@ def filter_send(input_en,
         multi = spark.read.parquet(input_multi + "/*.parquet")
         nolang = spark.read.parquet(input_nolang + "/*.parquet")
 
-        if research_safe:
+        if not safer:
             all_unsafe_en = spark.read.parquet("/media/hd2/relaion_research_unsafe/laion2B-en-md5-unsafe")
             all_unsafe_multi = spark.read.parquet("/media/hd2/relaion_research_unsafe/laion2B-multi-md5-unsafe")
             all_unsafe_nolang = spark.read.parquet("/media/hd2/relaion_research_unsafe/laion1B-nolang-md5-unsafe")
@@ -90,30 +94,30 @@ def filter_send(input_en,
             api=api,
         )
 
+# relaion-research
+filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
+            input_multi="/media/hd2/backup/laion2B-multi-md5",
+            input_nolang="/media/hd2/backup/laion1B-nolang-md5",
+            safer=False,
+            output_path_en="/media/hd2/relaion_research/relaion2B-en-research",
+            output_path_multi="/media/hd2/relaion_research/relaion2B-multi-research",
+            output_path_nolang="/media/hd2/relaion_research/relaion1B-nolang-research",
+            repo_id_en="laion/relaion2B-en-research",
+            repo_id_multi="laion/relaion2B-multi-research",
+            repo_id_nolang="laion/relaion1B-nolang-research",
+            compute=False,
+            upload=True)
+
 # relaion-research-safe
 filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
             input_multi="/media/hd2/backup/laion2B-multi-md5",
             input_nolang="/media/hd2/backup/laion1B-nolang-md5",
-            research_safe=True,
+            safer=True,
             output_path_en="/media/hd2/relaion_research_safe/relaion2B-en-research-safe",
             output_path_multi="/media/hd2/relaion_research_safe/relaion2B-multi-research-safe",
             output_path_nolang="/media/hd2/relaion_research_safe/relaion1B-nolang-research-safe",
             repo_id_en="laion/relaion2B-en-research-safe",
             repo_id_multi="laion/relaion2B-multi-research-safe",
             repo_id_nolang="laion/relaion1B-nolang-research-safe",
-            compute=True,
-            upload=False)
-
-# relaion-safe
-filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
-            input_multi="/media/hd2/backup/laion2B-multi-md5",
-            input_nolang="/media/hd2/backup/laion1B-nolang-md5",
-            research_safe=False,
-            output_path_en="/media/hd2/relaion_safe/relaion2B-en-safe",
-            output_path_multi="/media/hd2/relaion_safe/relaion2B-multi-safe",
-            output_path_nolang="/media/hd2/relaion_safe/relaion1B-nolang-safe",
-            repo_id_en="laion/relaion2B-en-safe",
-            repo_id_multi="laion/relaion2B-multi-safe",
-            repo_id_nolang="laion/relaion1B-nolang-safe",
             compute=True,
             upload=False)

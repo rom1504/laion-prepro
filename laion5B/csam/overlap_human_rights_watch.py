@@ -7,9 +7,9 @@ spark = SparkSession.builder.config("spark.driver.memory", "16G") .config("spark
 
 human_rights_watch = spark.read.option("header", True).csv("/media/hd2/human_rights_watch/merged_human_rights_watch.csv").select("url")
 
-en = spark.read.parquet("/media/hd2/backup/laion2B-en-md5/*.parquet").select("url")
-multi = spark.read.parquet("/media/hd2/backup/laion2B-multi-md5/*.parquet").select("url")
-nolang = spark.read.parquet("/media/hd2/backup/laion1B-nolang-md5/*.parquet").select("url")
+en = spark.read.parquet("/media/hd2/backup/laion2B-en-md5/*.parquet")
+multi = spark.read.parquet("/media/hd2/backup/laion2B-multi-md5/*.parquet")
+nolang = spark.read.parquet("/media/hd2/backup/laion1B-nolang-md5/*.parquet")
 
 hrw = broadcast(human_rights_watch)
 
