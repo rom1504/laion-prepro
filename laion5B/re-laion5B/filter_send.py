@@ -19,7 +19,7 @@ import shutil
 root_tmp_path="/media/nvme/root_tmp_path"
 
 def create_spark_session():
-    spark = SparkSession.builder.config("spark.driver.memory", "16G").config("spark.sql.shuffle.partitions", "1000") .config("spark.local.dir", "/media/nvme/spark-tmp").master("local[16]").appName('spark-stats').getOrCreate()
+    spark = SparkSession.builder.config("spark.driver.memory", "16G").config("spark.executor.memory", "1G").config("spark.storage.decommission.enabled", "true").config("spark.storage.cleanupFilesAfterExecutorExit", "true").config("spark.sql.shuffle.partitions", "1000") .config("spark.local.dir", "/media/nvme/spark-tmp").master("local[16]").appName('spark-stats').getOrCreate()
     return spark
 
 
@@ -106,7 +106,7 @@ filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
             repo_id_multi="laion/relaion2B-multi-research",
             repo_id_nolang="laion/relaion1B-nolang-research",
             compute=False,
-            upload=True)
+            upload=False)
 
 # relaion-research-safe
 filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
