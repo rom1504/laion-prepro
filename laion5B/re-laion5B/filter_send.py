@@ -10,6 +10,9 @@ from huggingface_hub import HfApi
 from huggingface_hub.commands.large_upload import large_upload
 import uuid
 import shutil
+import subprocess
+import os
+import tempfile
 
 # mapping from previous naming
 # research-safe -> research
@@ -29,6 +32,81 @@ def write_temp_read_recreate_spark(spark, df, root_tmp_path):
     output_df = spark.read.parquet(tmp_path)
     return [spark, output_df, tmp_path]
 
+
+
+def run_command(command, cwd=None, env=None):
+    try:
+        result = subprocess.run(command, cwd=cwd, env=env, check=True, capture_output=True, text=True)
+        print(f"Command '{' '.join(command)}' succeeded with output:\n{result.stdout}")
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        print(f"Command '{' '.join(command)}' failed with error:\n{e.stderr}")
+        return None
+
+
+"""
+The goal of this function is to upload to a new branch in a repository, in order to later
+have this branch replace the main branch while removing all previous history.
+
+1. clone without lfs, create empty branch called "relaion" with one empty commit (or maybe a readme?), push it
+2. do large upload on this branch
+3. later delete the main branch, then make a new main based on relaion and pushsscript (move_to_main.py)
+"""
+def clone_create_branch_push(repo_name):
+    # Define the repository URL
+    repo_url = f'https://huggingface.co/datasets/{repo_name}'
+    
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as clone_dir:
+        print(f"Cloning into temporary directory: {clone_dir}")
+
+        # Clone the repository without Git LFS
+        env = os.environ.copy()
+        env['GIT_LFS_SKIP_SMUDGE'] = '1'
+
+        clone_command = ['git', 'clone', repo_url, clone_dir]
+        if run_command(clone_command, env=env) is None:
+            return
+
+        # Define the new branch name
+        new_branch = 'relaion'
+
+        # Change the current working directory to the cloned repository
+        os.chdir(clone_dir)
+
+        # Create a new empty branch and an empty commit
+        if run_command(['git', 'checkout', '--orphan', new_branch]) is None:
+            return
+        if run_command(['git', 'rm', '-rf', '.']) is None:  # Remove all files
+            return
+        if run_command(['git', 'commit', '--allow-empty', '-m', 'Initial empty commit']) is None:
+            return
+
+        # Push the new branch to the remote repository
+        if run_command(['git', 'push', '-u', 'origin', new_branch]) is None:
+            return
+
+        print(f"Branch '{new_branch}' created and pushed successfully.")
+
+def upload(repo_name, folder_path):
+    # Create an API object
+    api = HfApi()
+
+    print(f"Uploading large files in '{folder_path}' to repository '{repo_name}'.")
+    # Perform the large upload
+    large_upload(
+        folder_path=folder_path,
+        repo_id=repo_name,
+        repo_type="dataset",
+        api=api,
+        revision='relaion',
+    )
+
+def create_branch_then_upload(repo_id, folder_path):
+    clone_create_branch_push(repo_id)
+    upload(repo_id, folder_path)
+
+# create_branch_then_upload('laion/my-test-repo', "/media/hd2/relaion_research/relaion1B-nolang-research")
 
 def filter_send(input_en,
                 input_multi,
@@ -73,25 +151,17 @@ def filter_send(input_en,
 
 
     if upload:
-        api = HfApi()
-
-        large_upload(
+        create_branch_then_upload(
             folder_path=output_path_en,
             repo_id=repo_id_en,
-            repo_type="dataset",
-            api=api,
         )
-        large_upload(
+        create_branch_then_upload(
             folder_path=output_path_multi,
             repo_id=repo_id_multi,
-            repo_type="dataset",
-            api=api,
         )
-        large_upload(
+        create_branch_then_upload(
             folder_path=output_path_nolang,
             repo_id=repo_id_nolang,
-            repo_type="dataset",
-            api=api,
         )
 
 # relaion-research
@@ -108,7 +178,7 @@ filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
             compute=False,
             upload=False)
 
-# relaion-research-safe
+# relaion-research-safe = main relaion5B
 filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
             input_multi="/media/hd2/backup/laion2B-multi-md5",
             input_nolang="/media/hd2/backup/laion1B-nolang-md5",
@@ -116,8 +186,8 @@ filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
             output_path_en="/media/hd2/relaion_research_safe/relaion2B-en-research-safe",
             output_path_multi="/media/hd2/relaion_research_safe/relaion2B-multi-research-safe",
             output_path_nolang="/media/hd2/relaion_research_safe/relaion1B-nolang-research-safe",
-            repo_id_en="laion/relaion2B-en-research-safe",
-            repo_id_multi="laion/relaion2B-multi-research-safe",
-            repo_id_nolang="laion/relaion1B-nolang-research-safe",
-            compute=True,
-            upload=False)
+            repo_id_en="laion/laion2B-en",
+            repo_id_multi="laion/laion2B-multi",
+            repo_id_nolang="laion/laion1B-nolang",
+            compute=False,
+            upload=True)
