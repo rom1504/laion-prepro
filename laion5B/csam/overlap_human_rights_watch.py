@@ -17,9 +17,9 @@ en_filtered = en.join(hrw, ["url"])
 multi_filtered = multi.join(hrw, ["url"])
 nolang_filtered = nolang.join(hrw, ["url"])
 
-en_filtered.write.parquet("/media/hd2/hrw/laion2B-en-md5-hrw")
-multi_filtered.write.parquet("/media/hd2/hrw/laion2B-multi-md5-hrw")
-nolang_filtered.write.parquet("/media/hd2/hrw/laion1B-nolang-md5-hrw")
+en_filtered.write.mode("overwrite").parquet("/media/hd2/hrw/laion2B-en-md5-hrw")
+multi_filtered.write.mode("overwrite").parquet("/media/hd2/hrw/laion2B-multi-md5-hrw")
+nolang_filtered.write.mode("overwrite").parquet("/media/hd2/hrw/laion1B-nolang-md5-hrw")
 
 en_filtered = spark.read.parquet("/media/hd2/hrw/laion2B-en-md5-hrw")
 multi_filtered = spark.read.parquet("/media/hd2/hrw/laion2B-multi-md5-hrw")

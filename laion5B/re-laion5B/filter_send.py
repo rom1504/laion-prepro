@@ -190,4 +190,4 @@ filter_send(input_en="/media/hd2/backup/laion2B-en-md5",
             repo_id_multi="laion/laion2B-multi",
             repo_id_nolang="laion/laion1B-nolang",
             compute=False,
-            upload=True)
+            upload=False)
