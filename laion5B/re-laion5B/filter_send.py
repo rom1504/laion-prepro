@@ -53,6 +53,7 @@ have this branch replace the main branch while removing all previous history.
 3. later delete the main branch, then make a new main based on relaion and pushsscript (move_to_main.py)
 """
 def clone_create_branch_push(repo_name):
+    cwd = os.getcwd()
     # Define the repository URL
     repo_url = f'https://huggingface.co/datasets/{repo_name}'
     
@@ -76,17 +77,22 @@ def clone_create_branch_push(repo_name):
 
         # Create a new empty branch and an empty commit
         if run_command(['git', 'checkout', '--orphan', new_branch]) is None:
+            os.chdir(cwd)
             return
         if run_command(['git', 'rm', '-rf', '.']) is None:  # Remove all files
+            os.chdir(cwd)
             return
         if run_command(['git', 'commit', '--allow-empty', '-m', 'Initial empty commit']) is None:
+            os.chdir(cwd)
             return
 
         # Push the new branch to the remote repository
         if run_command(['git', 'push', '-u', 'origin', new_branch]) is None:
+            os.chdir(cwd)
             return
 
         print(f"Branch '{new_branch}' created and pushed successfully.")
+        os.chdir(cwd)
 
 def upload(repo_name, folder_path):
     # Create an API object
