@@ -70,7 +70,7 @@ def filter_send(input_folder,
     if do_upload:
         upload(
             folder_path=output_folder,
-            repo_id=repo_id,
+            repo_name=repo_id,
         )
 
 
@@ -80,6 +80,7 @@ to_process = [
         "type": "en",
         "input_folder": "/media/hd2/backup/laion400m",
         "output_folder": "/media/hd2/relaion/variants_relaion_research_safe/laion400m",
+        "compute": False,
     },
     {
         "repo":"laion/laion400m_old", # field URL
@@ -184,5 +185,5 @@ for process in to_process:
                 output_folder=process["output_folder"],
                 repo_id=process["repo"],
                 type_of_dataset=process["type"],
-                compute=True,
-                do_upload=True)
+                compute=process["compute"] if "compute" in process else True,
+                do_upload=process["do_upload"] if "do_upload" in process else True)
