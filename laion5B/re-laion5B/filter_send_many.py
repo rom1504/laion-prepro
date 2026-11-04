@@ -52,7 +52,15 @@ def filter_send(input_folder,
     
     if compute:
         spark = create_spark_session()
-        df = spark.read.parquet(input_folder + "/*.parquet")
+        try:
+            df = spark.read.parquet(input_folder + "/*.parquet")
+        except Exception as e:
+            try:
+                print(f"Error reading without wildcard '*': {e}")
+                df = spark.read.parquet(input_folder + "/**/*.parquet")
+            except Exception as e:
+                print(f"Error reading with double wildcard '**': {e}")
+                df = spark.read.parquet(input_folder + "/**/**/*.parquet")
 
         if type_of_dataset == "en":
             all_unsafe = spark.read.parquet("/media/hd2/relaion_safe_unsafe_merged/laion2B-en-md5-safe_unsafe_merged")
@@ -147,6 +155,23 @@ to_process = [
         "type": "en",
         "input_folder": "/media/hd2/backup/laion-synthetic-115m",
         "output_folder": "/media/hd2/relaion/variants_relaion_research_safe/laion-synthetic-115m",
+    },
+]
+
+
+# breaks because of shitty files
+to_process = [
+    #{
+    #    "repo": "laion/aesthetics_v2_4.5",
+    #    "type": "en",
+    #    "input_folder": "/media/hd2/backup_30802/aesthetics_v2_4.5_fixed",
+    #    "output_folder": "/media/hd2/relaion/variants_relaion_research_safe/aesthetics_v2_4.5",
+    #},
+    {
+        "repo": "laion/aesthetics_v2_4.75",
+        "type": "en",
+        "input_folder": "/media/hd2/backup_30802/aesthetics_v2_4.75_fixed",
+        "output_folder": "/media/hd2/relaion/variants_relaion_research_safe/aesthetics_v2_4.75",
     },
 ]
 
