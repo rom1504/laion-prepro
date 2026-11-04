@@ -1,0 +1,2 @@
+These csam samples were obtained by working with iwf, c3p and stanford internet observatory.
+We obviously cannot share the samples themselves but the scripts in this folder are shared for transparency.
